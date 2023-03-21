@@ -1,4 +1,5 @@
 ﻿using learnApi.Models;
+using learnApi.Models.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +10,11 @@ namespace learnApi.Controllers
     public class VillaAPIController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<Villa> GetVillas() 
+        public IEnumerable<VillaDTO> GetVillas() 
         {
-            return new List<Villa> { 
-                new Villa { Id = 1, Nmae = "Villa north coast" }, 
-                new Villa { Id = 2, Nmae = "Villa red sea" } 
+            return new List<VillaDTO> { 
+                new VillaDTO { Id = 1, Nmae = "Villa north coast" }, 
+                new VillaDTO { Id = 2, Nmae = "Villa red sea" } 
             };
         }
     }
