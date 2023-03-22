@@ -36,6 +36,11 @@ namespace learnApi.Controllers
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
         public ActionResult<VillaDTO> CreateVilla([FromBody]VillaDTO villa)
         {
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //} 
+            //  [ApiController] already does model validation .
             if (villa == null) { return BadRequest(villa); }
             if (villa.Id > 0)
             {
