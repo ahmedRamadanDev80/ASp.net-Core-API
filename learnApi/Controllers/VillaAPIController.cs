@@ -64,5 +64,18 @@ namespace learnApi.Controllers
             VillaStore.villaList.Remove(villa);
             return NoContent();
         }
+
+        [HttpPut("{id:int}",Name ="UpdateVilla")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult UpdateVilla(int id, [FromBody]VillaDTO villa) 
+        {
+            if (villa ==null || id != villa.Id) { return BadRequest(); }
+            var oldVilla = VillaStore.villaList.FirstOrDefault(villa => villa.Id == id);
+            oldVilla.Nmae = villa.Nmae;
+            oldVilla.Occupancy= villa.Occupancy;
+            oldVilla.Sqft = villa.Sqft;
+            return NoContent();
+        }
     }
 }

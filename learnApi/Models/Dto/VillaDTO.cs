@@ -8,5 +8,7 @@ namespace learnApi.Models.Dto
         [Required]
         [MaxLength(30)]
         public string Nmae { get; set; }
+        public int Occupancy { get; set; }
+        public int Sqft { get; set; }
     }
 }
