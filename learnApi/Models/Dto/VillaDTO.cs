@@ -7,7 +7,7 @@ namespace learnApi.Models.Dto
         public int Id { get; set; }
         [Required]
         [MaxLength(30)]
-        public string Nmae { get; set; }
+        public string Name { get; set; }
         public int Occupancy { get; set; }
         public int Sqft { get; set; }
     }

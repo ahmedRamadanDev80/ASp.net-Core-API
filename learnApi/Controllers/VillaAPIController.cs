@@ -3,6 +3,7 @@ using learnApi.Models;
 using learnApi.Models.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace learnApi.Controllers
@@ -72,10 +73,33 @@ namespace learnApi.Controllers
         {
             if (villa ==null || id != villa.Id) { return BadRequest(); }
             var oldVilla = VillaStore.villaList.FirstOrDefault(villa => villa.Id == id);
-            oldVilla.Nmae = villa.Nmae;
+            oldVilla.Name = villa.Name;
             oldVilla.Occupancy= villa.Occupancy;
             oldVilla.Sqft = villa.Sqft;
             return NoContent();
         }
+
+        [HttpPatch("{id:int}", Name = "UpdatePartialVilla")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VillaDTO> patchDTO)
+        {
+            if (patchDTO == null || id == 0)
+            {
+                return BadRequest();
+            }
+            var villa = VillaStore.villaList.FirstOrDefault(u => u.Id == id);
+            if (villa == null)
+            {
+                return BadRequest();
+            }
+            patchDTO.ApplyTo(villa, ModelState);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return NoContent();
+        }
+
     }
 }
