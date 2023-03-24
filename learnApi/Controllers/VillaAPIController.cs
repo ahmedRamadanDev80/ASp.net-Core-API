@@ -43,7 +43,7 @@ namespace learnApi.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable)]
-        public ActionResult<VillaDTO> CreateVilla([FromBody]VillaDTO villa)
+        public ActionResult<VillaDTO> CreateVilla([FromBody] VillaCreateDTO villa)
         {
             //if (!ModelState.IsValid)
             //{
@@ -56,15 +56,11 @@ namespace learnApi.Controllers
                 return BadRequest(ModelState);
             }
             if (villa == null) { return BadRequest(villa); }
-            if (villa.Id > 0)
-            {
-                return StatusCode(StatusCodes.Status406NotAcceptable);
-            }
+            
             Villa model = new()
             {
                 Amenity = villa.Amenity,
                 Details = villa.Details,
-                Id = villa.Id,
                 ImageUrl = villa.ImageUrl,
                 Name = villa.Name,
                 Occupancy = villa.Occupancy,
@@ -73,7 +69,7 @@ namespace learnApi.Controllers
             };
             _db.Villas.Add(model);
             _db.SaveChanges();
-            return CreatedAtRoute("Getvilla", new {id=villa.Id},villa);
+            return CreatedAtRoute("Getvilla", new {id= model.Id}, model);
 
         }
 
@@ -94,7 +90,7 @@ namespace learnApi.Controllers
         [HttpPut("{id:int}",Name ="UpdateVilla")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdateVilla(int id, [FromBody]VillaDTO villa) 
+        public IActionResult UpdateVilla(int id, [FromBody] VillaUpdateDTO villa) 
         {
             if (villa ==null || id != villa.Id) { return BadRequest(); }
             Villa model = new()
@@ -116,14 +112,14 @@ namespace learnApi.Controllers
         [HttpPatch("{id:int}", Name = "UpdatePartialVilla")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VillaDTO> patchDTO)
+        public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VillaUpdateDTO> patchDTO)
         {
             if (patchDTO == null || id == 0)
             {
                 return BadRequest();
             }
             var villa = _db.Villas.AsNoTracking().FirstOrDefault(u => u.Id == id);
-            VillaDTO villaDTO = new()
+            VillaUpdateDTO villaDTO = new()
             {
                 Amenity = villa.Amenity,
                 Details = villa.Details,
