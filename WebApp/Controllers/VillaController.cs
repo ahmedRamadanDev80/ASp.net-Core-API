@@ -27,5 +27,27 @@ namespace WebApp.Controllers
             }
             return View(list);
         }
-    }
+
+		public async Task<IActionResult> CreateVilla()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> CreateVilla(VillaCreateDTO model)
+		{
+			if (ModelState.IsValid)
+			{
+
+				var response = await _villaService.CreateAsync<APIResponse>(model);
+				if (response != null && response.IsSuccess)
+				{
+					return RedirectToAction(nameof(Index));
+				}
+			}
+			return View(model);
+		}
+
+	}
 }
