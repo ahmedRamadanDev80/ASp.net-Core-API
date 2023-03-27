@@ -20,7 +20,7 @@
 					Occupany
 				</th>
 				<th>
-					Price
+					Rate
 				</th>
 				<th></th>
 			</tr>
@@ -31,7 +31,7 @@
 				<tr>
 					<td>@item.Name</td>
 					<td>@item.Occupancy</td>
-					<td>@((item.Rate).ToString("c"))</td>
+					<td>@((item.Rate))</td>
 					<td>
 						<a asp-controller="Villa" asp-action="UpdateVilla" class="btn btn-success"><i class="bi bi-pencil-square"></i></a>
 						<a asp-controller="Villa" asp-action="DeleteVilla" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
