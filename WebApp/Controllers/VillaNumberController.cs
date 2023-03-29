@@ -61,6 +61,12 @@ namespace WebApp.Controllers
                 {
                     return RedirectToAction(nameof(Index));
                 }
+                else
+                {
+                    // display the error 
+                    if(response.ErrorMessages.Count > 0) 
+                    { ModelState.AddModelError("ErrorMessages",response.ErrorMessages.FirstOrDefault()); }
+                }
             }
             // in case of an error refill the text boxes with villa data again
             var resp = await _villaService.GetAllAsync<APIResponse>();
