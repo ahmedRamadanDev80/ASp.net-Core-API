@@ -59,6 +59,7 @@ namespace WebApp.Controllers
                 var response = await _villaNumberService.CreateAsync<APIResponse>(model.VillaNumber);
                 if (response != null && response.IsSuccess)
                 {
+                    TempData["success"] = "VillaNumber created successfully";
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -79,6 +80,7 @@ namespace WebApp.Controllers
                         Value = i.Id.ToString()
                     }); ;
             }
+            TempData["error"] = "Error encountered.";
             return View(model);
         }
 
@@ -118,6 +120,7 @@ namespace WebApp.Controllers
                 var response = await _villaNumberService.UpdateAsync<APIResponse>(model.VillaNumber);
                 if (response != null && response.IsSuccess)
                 {
+                    TempData["success"] = "VillaNumber updated successfully";
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -139,6 +142,7 @@ namespace WebApp.Controllers
                         Value = i.Id.ToString()
                     }); ;
             }
+            TempData["error"] = "Error encountered.";
             return View(model);
         }
 
@@ -176,9 +180,10 @@ namespace WebApp.Controllers
             var response = await _villaNumberService.DeleteAsync<APIResponse>(model.VillaNumber.VillaNo);
             if (response != null && response.IsSuccess)
             {
+                TempData["success"] = "VillaNumber Deleted successfully";
                 return RedirectToAction(nameof(Index));
             }
-
+            TempData["error"] = "Error encountered.";
             return View(model);
         }
     }
