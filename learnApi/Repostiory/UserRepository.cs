@@ -11,11 +11,13 @@ namespace learnApi.Repostiory
 
         private readonly ApplicationDbContext _db;
         private readonly IMapper _mapper;
+        private string secretKey;
 
-        public UserRepository(ApplicationDbContext db,IMapper mapper)
+        public UserRepository(ApplicationDbContext db,IMapper mapper, IConfiguration configuration)
         {
             _db = db;
             _mapper = mapper;
+            secretKey = configuration.GetValue<string>("ApiSettings:Secret");
         }
         public bool IsUniqueUser(string username)
         {
@@ -26,7 +28,16 @@ namespace learnApi.Repostiory
 
         public async Task<LoginResponseDTO> Login(LoginRequestDTO loginRequestDTO)
         {
-            throw new NotImplementedException();
+            var user = _db.LocalUsers.FirstOrDefault(u => u.UserName.ToLower() == loginRequestDTO.UserName.ToLower()
+            && u.Password == loginRequestDTO.Password);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            //if user was found in the DB  generate JWT Token
+
         }
 
         public async Task<LocalUser> Register(RegisterationRequestDTO registerationRequestDTO)
