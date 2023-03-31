@@ -37,7 +37,11 @@ namespace learnApi.Repostiory
 
             if (user == null)
             {
-                return null;
+                return new LoginResponseDTO()
+                {
+                    Token = "",
+                    User = null
+                };
             }
 
             //if user was found in the DB  generate JWT Token
