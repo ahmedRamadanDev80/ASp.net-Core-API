@@ -4,6 +4,7 @@ using learnApi.Data;
 using learnApi.Models;
 using learnApi.Models.Dto;
 using learnApi.Repostiory.IRepostiory;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.JsonPatch;
@@ -30,6 +31,7 @@ namespace learnApi.Controllers
         }
 
         // ---------- GET ALL ----------
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public  async Task<ActionResult<APIResponse>> GetVillas() 
@@ -50,6 +52,7 @@ namespace learnApi.Controllers
         }
 
         // ---------- GET BY ID ----------
+        [Authorize]
         [HttpGet("{id:int}",Name ="GetVilla")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -86,6 +89,7 @@ namespace learnApi.Controllers
         }
 
         // ---------- CREATE ----------
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -120,6 +124,7 @@ namespace learnApi.Controllers
         }
 
         // ---------- DELETE ----------
+        [Authorize(Roles = "admin")]
         [HttpDelete("{id:int}",Name ="DeleteVilla")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -155,6 +160,7 @@ namespace learnApi.Controllers
         }
 
         // ---------- UPDATE ----------
+        [Authorize]
         [HttpPut("{id:int}",Name ="UpdateVilla")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
