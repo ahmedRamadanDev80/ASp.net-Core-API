@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using WebApp.Models;
 using WebApp.Models.Dto;
 using WebApp.Services.IServices;
+using WebApp_Utility;
 
 namespace WebApp.Controllers
 {
@@ -24,7 +27,20 @@ namespace WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginRequestDTO obj)
         {
-            return View();
+            APIResponse response = await _authService.LoginAsync<APIResponse>(obj);
+            // if login is successful
+            if (response != null && response.IsSuccess)
+            {
+                LoginResponseDTO model = JsonConvert.DeserializeObject<LoginResponseDTO>(Convert.ToString(response.Result));
+                //add token in session
+                HttpContext.Session.SetString(SD.SessionToken, model.Token);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("CustomError", response.ErrorMessages.FirstOrDefault());
+                return View(obj);
+            }
         }
 
         [HttpGet]
@@ -49,7 +65,10 @@ namespace WebApp.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            return View();
+            await HttpContext.SignOutAsync();
+            //remove token from session
+            HttpContext.Session.SetString(SD.SessionToken, "");
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult AccessDenied()
