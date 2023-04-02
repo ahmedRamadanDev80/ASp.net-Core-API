@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 using WebApp.Models;
 using WebApp.Models.Dto;
 using WebApp.Services.IServices;
@@ -32,6 +34,12 @@ namespace WebApp.Controllers
             if (response != null && response.IsSuccess)
             {
                 LoginResponseDTO model = JsonConvert.DeserializeObject<LoginResponseDTO>(Convert.ToString(response.Result));
+                // adding claims in a cookie 
+                var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                identity.AddClaim(new Claim(ClaimTypes.Name, model.User.UserName));
+                identity.AddClaim(new Claim(ClaimTypes.Role, model.User.Role));
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                 //add token in session
                 HttpContext.Session.SetString(SD.SessionToken, model.Token);
                 return RedirectToAction("Index", "Home");

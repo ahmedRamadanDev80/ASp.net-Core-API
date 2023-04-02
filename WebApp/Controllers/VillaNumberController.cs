@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Data;
 using WebApp.Models;
 using WebApp.Models.Dto;
 using WebApp.Models.VM;
@@ -33,6 +35,7 @@ namespace WebApp.Controllers
             return View(list);
         }
 
+        [Authorize]
         public async Task<IActionResult> CreateVillaNumber()
         {
             VillaNumberCreateVM villaNumberVM = new();
@@ -51,6 +54,7 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> CreateVillaNumber(VillaNumberCreateVM model)
         {
             if (ModelState.IsValid)
@@ -84,6 +88,7 @@ namespace WebApp.Controllers
             return View(model);
         }
 
+        [Authorize]
         public async Task<IActionResult> UpdateVillaNumber(int VillaNo)
         {
             VillaNumberUpdateVM villaNumberVM = new();
@@ -112,6 +117,7 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> UpdateVillaNumber(VillaNumberUpdateVM model)
         {
             if (ModelState.IsValid)
@@ -146,6 +152,7 @@ namespace WebApp.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteVillaNumber(int VillaNo)
         {
             VillaNumberDeleteVM villaNumberVM = new();
@@ -174,6 +181,7 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteVillaNumber(VillaNumberDeleteVM model)
         {
 

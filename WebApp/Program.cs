@@ -1,6 +1,7 @@
 using WebApp;
 using WebApp.Services.IServices;
 using WebApp.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,15 @@ builder.Services.AddHttpClient<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.HttpOnly= true;
+                    options.ExpireTimeSpan=TimeSpan.FromDays(2);
+                    options.LoginPath = "/Auth/Login";
+                    options.AccessDeniedPath = "/Auth/AccessDenied";
+                    options.SlidingExpiration = true;
+                });
 
 builder.Services.AddSession(options =>
 {
@@ -42,8 +52,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseSession();
+
+app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
