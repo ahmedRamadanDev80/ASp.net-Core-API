@@ -5,6 +5,7 @@ using System.Diagnostics;
 using WebApp.Models;
 using WebApp.Models.Dto;
 using WebApp.Services.IServices;
+using WebApp_Utility;
 
 namespace WebApp.Controllers
 {
@@ -21,7 +22,7 @@ namespace WebApp.Controllers
 		public async Task<IActionResult> Index()
         {
 			List<VillaDTO> list = new();
-			var response = await _villaService.GetAllAsync<APIResponse>();
+			var response = await _villaService.GetAllAsync<APIResponse>(HttpContext.Session.GetString(SD.SessionToken));
 			if (response != null && response.IsSuccess)
 			{
 				list = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.Result));

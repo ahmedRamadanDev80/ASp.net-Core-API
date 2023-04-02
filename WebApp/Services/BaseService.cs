@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 using WebApp.Models;
 using WebApp.Services.IServices;
@@ -49,6 +50,12 @@ namespace WebApp.Services
                         message.Method = HttpMethod.Get;
                         break;
                 }
+                //adding token with the api request
+                if (!string.IsNullOrEmpty(apiRequest.Token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiRequest.Token);
+                }
+
                 // making an object to catch the response of the api in it
                 HttpResponseMessage apiResponse = null;
 

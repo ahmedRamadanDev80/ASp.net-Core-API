@@ -51,7 +51,8 @@ namespace learnApi.Controllers
                 _response.ErrorMessages.Add("Username already exists");
                 return BadRequest(_response);
             }
-
+            // default role 
+            model.Role = "user";
             var user = await _userRepo.Register(model);
             if (user == null)
             {

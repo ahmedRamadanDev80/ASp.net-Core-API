@@ -18,33 +18,33 @@ namespace WebApp.Services
         }
 
         // ---------- CREATE ----------
-        public Task<T> CreateAsync<T>(VillaNumberCreateDTO dto)
+        public Task<T> CreateAsync<T>(VillaNumberCreateDTO dto,string token)
         {
-            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.POST, Data = dto, Url = villaUrl + "/api/villaNumberAPI" });
+            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.POST, Data = dto, Url = villaUrl + "/api/villaNumberAPI", Token = token });
         }
 
         // ---------- DELETE ----------
-        public Task<T> DeleteAsync<T>(int Num)
+        public Task<T> DeleteAsync<T>(int Num,string token)
         {
-            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.DELETE, Url = villaUrl + "/api/villaNumberAPI/" + Num });
+            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.DELETE, Url = villaUrl + "/api/villaNumberAPI/" + Num , Token = token });
         }
 
         // ---------- GET ALL ----------
-        public Task<T> GetAllAsync<T>()
+        public Task<T> GetAllAsync<T>(string token)
         {
-            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.GET, Url = villaUrl + "/api/villaNumberAPI"});
+            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.GET, Url = villaUrl + "/api/villaNumberAPI", Token = token });
         }
 
         // ---------- GET BY ID ----------
-        public Task<T> GetAsync<T>(int Num)
+        public Task<T> GetAsync<T>(int Num, string token)
         {
-            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.GET, Url = villaUrl + "/api/villaNumberAPI/" + Num });
+            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.GET, Url = villaUrl + "/api/villaNumberAPI/" + Num , Token = token });
         }
 
         // ---------- UPDATE ----------
-        public Task<T> UpdateAsync<T>(VillaNumberUpdateDTO dto)
+        public Task<T> UpdateAsync<T>(VillaNumberUpdateDTO dto,string token)
         {
-            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.PUT, Data = dto, Url = villaUrl + "/api/villaNumberAPI/" + dto.VillaNo});
+            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.PUT, Data = dto, Url = villaUrl + "/api/villaNumberAPI/" + dto.VillaNo,Token=token});
         }
     }
 }

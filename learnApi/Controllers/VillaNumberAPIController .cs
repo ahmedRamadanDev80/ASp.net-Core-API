@@ -4,6 +4,7 @@ using learnApi.Data;
 using learnApi.Models;
 using learnApi.Models.Dto;
 using learnApi.Repostiory.IRepostiory;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.JsonPatch;
@@ -88,6 +89,7 @@ namespace learnApi.Controllers
         }
 
         // ---------- CREATE ----------
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -127,6 +129,7 @@ namespace learnApi.Controllers
         }
 
         // ---------- DELETE ----------
+        [Authorize(Roles = "admin")]
         [HttpDelete("{Num:int}",Name = "DeleteVillaNumber")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -162,6 +165,7 @@ namespace learnApi.Controllers
         }
 
         // ---------- UPDATE ----------
+        [Authorize]
         [HttpPut("{No:int}",Name = "UpdateVillaNumber")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

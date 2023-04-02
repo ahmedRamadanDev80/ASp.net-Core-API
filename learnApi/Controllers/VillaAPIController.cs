@@ -51,7 +51,6 @@ namespace learnApi.Controllers
         }
 
         // ---------- GET BY ID ----------
-        [Authorize]
         [HttpGet("{id:int}",Name ="GetVilla")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
