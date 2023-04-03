@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace learnApi.Controllers
+namespace learnApi.Controllers.v1
 {
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -14,10 +14,10 @@ namespace learnApi.Controllers
     {
         private readonly IUserRepository _userRepo;
         protected APIResponse _response;
-        public UsersController(IUserRepository userRepo) 
-        { 
+        public UsersController(IUserRepository userRepo)
+        {
             _userRepo = userRepo;
-            _response= new APIResponse();
+            _response = new APIResponse();
         }
 
         [HttpPost("login")]
