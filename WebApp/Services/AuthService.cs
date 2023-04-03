@@ -19,12 +19,12 @@ namespace WebApp.Services
 
         public Task<T> LoginAsync<T>(LoginRequestDTO obj)
         {
-            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.POST, Data = obj, Url = villaUrl + "/api/Users/login" });
+            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.POST, Data = obj, Url = villaUrl + "/api/v1/Users/login" });
         }
 
         public Task<T> RegisterAsync<T>(RegisterationRequestDTO obj)
         {
-            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.POST, Data = obj, Url = villaUrl + "/api/Users/register" });
+            return SendAsync<T>(new APIRequest(){ apiType = SD.ApiType.POST, Data = obj, Url = villaUrl + "/api/v1/Users/register" });
         }
     }
 }

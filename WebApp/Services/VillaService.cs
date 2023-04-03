@@ -19,30 +19,30 @@ namespace WebApp.Services
         // ---------- CREATE ----------
         public Task<T> CreateAsync<T>(VillaCreateDTO dto, string token)
         {
-            return SendAsync<T>(new APIRequest() {apiType = SD.ApiType.POST,Data =dto,Url=villaUrl+"/api/villaAPI", Token = token });
+            return SendAsync<T>(new APIRequest() {apiType = SD.ApiType.POST,Data =dto,Url=villaUrl+ "/api/v1/villaAPI", Token = token });
         }
 
         // ---------- DELETE ----------
         public Task<T> DeleteAsync<T>(int id, string token)
         {
-            return SendAsync<T>(new APIRequest() { apiType = SD.ApiType.DELETE, Url = villaUrl + "/api/villaAPI/"+id, Token = token });
+            return SendAsync<T>(new APIRequest() { apiType = SD.ApiType.DELETE, Url = villaUrl + "/api/v1/villaAPI/" + id, Token = token });
         }
 
         // ---------- GET ALL ----------
         public Task<T> GetAllAsync<T>(string token)
         {
-            return SendAsync<T>(new APIRequest() { apiType = SD.ApiType.GET, Url = villaUrl + "/api/villaAPI", Token = token });
+            return SendAsync<T>(new APIRequest() { apiType = SD.ApiType.GET, Url = villaUrl + "/api/v1/villaAPI", Token = token });
         }
         // ---------- GET BY ID ----------
         public Task<T> GetAsync<T>(int id, string token)
         {
-            return SendAsync<T>(new APIRequest() { apiType = SD.ApiType.GET, Url = villaUrl + "/api/villaAPI/"+id , Token = token });
+            return SendAsync<T>(new APIRequest() { apiType = SD.ApiType.GET, Url = villaUrl + "/api/v1/villaAPI/" + id , Token = token });
         }
 
         // ---------- UPDATE ----------
         public Task<T> UpdateAsync<T>(VillaUpdateDTO dto, string token)
         {
-            return SendAsync<T>(new APIRequest() { apiType = SD.ApiType.PUT, Data = dto, Url = villaUrl + "/api/villaAPI/"+dto.Id , Token = token });
+            return SendAsync<T>(new APIRequest() { apiType = SD.ApiType.PUT, Data = dto, Url = villaUrl + "/api/v1/villaAPI/" + dto.Id , Token = token });
         }
     }
 }
