@@ -81,6 +81,23 @@ builder.Services.AddSwaggerGen(options => {
             new List<string>()
         }
     });
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1.0",
+        Title = "Villa API",
+        Description = "API to manage Villas",
+        TermsOfService = new Uri("https://example.com/terms"),
+        Contact = new OpenApiContact
+        {
+            Name = "Altair",
+            Url = new Uri("https://github.com/ahmedRamadanDev80")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Example License",
+            Url = new Uri("https://example.com/license")
+        }
+    });
 
 });
 
@@ -90,7 +107,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options => {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "VillaAPI_V1");
+    });
 }
 
 app.UseHttpsRedirection();
