@@ -15,9 +15,10 @@ using System.Net;
 
 namespace learnApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class VillaNumberAPIController : ControllerBase
     {
         // Dependency Injection
@@ -34,6 +35,8 @@ namespace learnApi.Controllers
         }
 
         // ---------- GET ALL ----------
+        //  v1
+        [MapToApiVersion("1.0")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public  async Task<ActionResult<APIResponse>> GetVillaNumbers() 
@@ -51,6 +54,14 @@ namespace learnApi.Controllers
                 _response.ErrorMessages = new List<string>() { ex.ToString() };
             }
             return _response;
+        }
+        //  v2 test 2 get controllers same params in same controller
+
+        [MapToApiVersion("2.0")]
+        [HttpGet]
+        public IEnumerable<string> Get()
+        {
+            return new string[] { "learn", "versioning" };
         }
 
         // ---------- GET BY ID ----------
