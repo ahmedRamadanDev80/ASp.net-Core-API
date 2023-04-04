@@ -33,7 +33,7 @@ namespace learnApi.Controllers.v1
 
         // ---------- GET ALL ----------
         [HttpGet]
-        [ResponseCache(Duration = 30)]
+        [ResponseCache(CacheProfileName = "Default")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {
