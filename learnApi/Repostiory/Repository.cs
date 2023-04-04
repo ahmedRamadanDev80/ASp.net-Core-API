@@ -23,11 +23,21 @@ namespace learnApi.Repostiory
             await SaveAsync();
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, 
+            int pageSize = 4, int pageNumber = 1)
         {
             IQueryable<T> query = dbSet;
             if (filter != null) query = query.Where(filter);
-			if (includeProperties != null)
+            if (pageSize > 0)
+            {
+                if (pageSize > 100)
+                {
+                    pageSize = 100;
+                }
+                //skip0.take(4)
+                query = query.Skip(pageSize * (pageNumber - 1)).Take(pageSize);
+            }
+            if (includeProperties != null)
 			{
 				foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
 				{
