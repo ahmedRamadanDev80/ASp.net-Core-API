@@ -66,6 +66,7 @@ namespace learnApi.Controllers.v1
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     _response.ErrorMessages = new List<string>() { "BAD REQUEST" };
+                    _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
                 var villaNumber = await _dbVillaNumber.GetAsync(u => u.VillaNo == Num);
@@ -73,6 +74,7 @@ namespace learnApi.Controllers.v1
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
                     _response.ErrorMessages = new List<string>() { "NOT FOUND" };
+                    _response.IsSuccess = false;
                     return NotFound(_response);
                 }
                 _response.Result = _mapper.Map<VillaNumberDTO>(villaNumber);
@@ -101,11 +103,13 @@ namespace learnApi.Controllers.v1
                 if (await _dbVillaNumber.GetAsync(u => u.VillaNo == createDTO.VillaNo) != null)
                 {
                     ModelState.AddModelError("ErrorMessages", "Villa already Exists!");
+                    _response.IsSuccess = false;
                     return BadRequest(ModelState);
                 }
                 if (await _dbVilla.GetAsync(u => u.Id == createDTO.VillaID) == null)
                 {
                     ModelState.AddModelError("ErrorMessages", "Villa ID is Invalid!");
+                    _response.IsSuccess = false;
                     return BadRequest(ModelState);
                 }
                 if (createDTO == null)
@@ -143,6 +147,7 @@ namespace learnApi.Controllers.v1
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     _response.ErrorMessages = new List<string>() { "BAD REQUEST" };
+                    _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
                 var villaNumber = await _dbVillaNumber.GetAsync(u => u.VillaNo == Num);
@@ -150,6 +155,7 @@ namespace learnApi.Controllers.v1
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
                     _response.ErrorMessages = new List<string>() { "NOT FOUND" };
+                    _response.IsSuccess = false;
                     return NotFound(_response);
                 }
                 await _dbVillaNumber.RemoveAsync(villaNumber);
@@ -178,11 +184,13 @@ namespace learnApi.Controllers.v1
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     _response.ErrorMessages = new List<string>() { "BAD REQUEST" };
+                    _response.IsSuccess = false;
                     return BadRequest(_response);
                 }
                 if (await _dbVilla.GetAsync(u => u.Id == updateDTO.VillaID) == null)
                 {
                     ModelState.AddModelError("ErrorMessages", "Villa ID is Invalid!");
+                    _response.IsSuccess = false;
                     return BadRequest(ModelState);
                 }
                 VillaNumber model = _mapper.Map<VillaNumber>(updateDTO);
