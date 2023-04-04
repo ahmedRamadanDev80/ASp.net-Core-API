@@ -33,6 +33,7 @@ namespace learnApi.Controllers.v1
 
         // ---------- GET ALL ----------
         [HttpGet]
+        [ResponseCache(Duration = 30)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillas()
         {
@@ -53,6 +54,8 @@ namespace learnApi.Controllers.v1
 
         // ---------- GET BY ID ----------
         [HttpGet("{id:int}", Name = "GetVilla")]
+        // never cache
+        //[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
