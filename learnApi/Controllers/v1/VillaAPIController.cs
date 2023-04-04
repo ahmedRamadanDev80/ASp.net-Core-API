@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Net;
+using System.Text.Json;
 
 namespace learnApi.Controllers.v1
 {
@@ -55,6 +56,9 @@ namespace learnApi.Controllers.v1
                     //it does not do a Db call it uses the data it has in the memory to search the string  
                     villaList = villaList.Where(u => u.Name.ToLower().Contains(search));
                 }
+                Pagination pagination = new() { PageNumber = pageNumber, PageSize = pageSize };
+
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagination));
                 _response.Result = _mapper.Map<List<VillaDTO>>(villaList);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
