@@ -35,7 +35,7 @@ namespace learnApi.Controllers.v1
         [HttpGet]
         [ResponseCache(CacheProfileName = "Default")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name = "filterOccupancy")] int? occupancy)
+        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name = "filterOccupancy")] int? occupancy, [FromQuery] string? search)
         {
             try
             {
@@ -47,6 +47,11 @@ namespace learnApi.Controllers.v1
                 else
                 {
                     villaList = await _dbVilla.GetAllAsync();
+                }
+                if (!string.IsNullOrEmpty(search))
+                {
+                    //it does not do a Db call it uses the data it has in the memory to search the string  
+                    villaList = villaList.Where(u => u.Name.ToLower().Contains(search));
                 }
                 _response.Result = _mapper.Map<List<VillaDTO>>(villaList);
                 _response.StatusCode = HttpStatusCode.OK;
