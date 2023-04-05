@@ -74,13 +74,34 @@ namespace learnApi.Repostiory
 
         }
 
-        public async Task<LocalUser> Register(RegisterationRequestDTO registerationRequestDTO)
+        public async Task<UserDTO> Register(RegisterationRequestDTO registerationRequestDTO)
         {
-            LocalUser user = _mapper.Map<LocalUser>(registerationRequestDTO);
-            _db.LocalUsers.Add(user);
-            await _db.SaveChangesAsync();
-            user.Password = "";
-            return user;
+            ApplicationUser user = _mapper.Map<ApplicationUser>(registerationRequestDTO);
+            //ApplicationUser user = new()
+            //{
+            //    UserName = registerationRequestDTO.UserName,
+            //    Email = registerationRequestDTO.Email,
+            //    NormalizedEmail = registerationRequestDTO.Email.ToUpper(),
+            //    Name = registerationRequestDTO.Name
+            //};
+            try
+            {
+                var result = await _userManager.CreateAsync(user, registerationRequestDTO.Password);
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, "admin");
+                    var userToReturn = _db.ApplicationUsers
+                        .FirstOrDefault(u => u.UserName == registerationRequestDTO.UserName);
+                    return _mapper.Map<UserDTO>(userToReturn);
+
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return new UserDTO();
         }
     }
 }
