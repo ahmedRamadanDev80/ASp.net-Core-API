@@ -18,7 +18,7 @@ namespace learnApi
             CreateMap<VillaNumber, VillaNumberUpdateDTO>().ReverseMap();
 
             CreateMap<LocalUser, RegisterationRequestDTO>().ReverseMap();
-
+            CreateMap<ApplicationUser, UserDTO>().ReverseMap();
         }
     }
 }
