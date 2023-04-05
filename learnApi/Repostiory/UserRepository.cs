@@ -16,14 +16,17 @@ namespace learnApi.Repostiory
 
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private string secretKey;
 
-        public UserRepository(ApplicationDbContext db,IMapper mapper, IConfiguration configuration,UserManager<ApplicationUser> userManager)
+        public UserRepository(ApplicationDbContext db,IMapper mapper, IConfiguration configuration,UserManager<ApplicationUser> userManager
+            , RoleManager<IdentityRole> roleManager)
         {
             _db = db;
             _userManager = userManager;
             _mapper = mapper;
+            _roleManager= roleManager;
             secretKey = configuration.GetValue<string>("ApiSettings:Secret");
         }
         public bool IsUniqueUser(string username)
@@ -76,19 +79,23 @@ namespace learnApi.Repostiory
 
         public async Task<UserDTO> Register(RegisterationRequestDTO registerationRequestDTO)
         {
-            ApplicationUser user = _mapper.Map<ApplicationUser>(registerationRequestDTO);
-            //ApplicationUser user = new()
-            //{
-            //    UserName = registerationRequestDTO.UserName,
-            //    Email = registerationRequestDTO.Email,
-            //    NormalizedEmail = registerationRequestDTO.Email.ToUpper(),
-            //    Name = registerationRequestDTO.Name
-            //};
+            ApplicationUser user = new()
+            {
+                UserName = registerationRequestDTO.UserName,
+                Email = registerationRequestDTO.Email,
+                NormalizedEmail = registerationRequestDTO.Email.ToUpper(),
+                Name = registerationRequestDTO.Name
+            };
             try
             {
                 var result = await _userManager.CreateAsync(user, registerationRequestDTO.Password);
                 if (result.Succeeded)
                 {
+                    if (!_roleManager.RoleExistsAsync("admin").GetAwaiter().GetResult())
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole("admin"));
+                        await _roleManager.CreateAsync(new IdentityRole("customer"));
+                    }
                     await _userManager.AddToRoleAsync(user, "admin");
                     var userToReturn = _db.ApplicationUsers
                         .FirstOrDefault(u => u.UserName == registerationRequestDTO.UserName);
